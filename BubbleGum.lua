@@ -1,15 +1,20 @@
--- Load Rayfield UI safely
-local success, Rayfield = pcall(function()
-    return loadstring(game:HttpGet("https://raw.githubusercontent.com/yourusername/Rayfield/main/source.lua"))()
+-- Load Wind UI safely
+local success, WindLib = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/main.lua"))()
 end)
 
-if not success or not Rayfield then
-    warn("❌ Failed to load Rayfield UI. Please check the URL or your internet connection.")
+if not success or not WindLib then
+    warn("❌ Failed to load Wind UI. Please check the URL or your internet connection.")
     return
 end
 
 -- Create the main window
-local Window = Rayfield:CreateWindow("Bubble Gum Simulator Infinity")
+local Window = WindLib:CreateWindow("Bubble Gum Simulator Infinity", {
+    main_color = Color3.fromRGB(80, 120, 255),
+    min_size = Vector2.new(450, 350),
+    toggle_key = Enum.KeyCode.RightShift,
+    can_resize = true
+})
 
 -- Main Tab
 local MainTab = Window:CreateTab("Main")
@@ -44,4 +49,4 @@ MainTab:CreateToggle("Auto Sell (Bypass)", function(state)
 end)
 
 -- Show the UI
-Rayfield:Show()
+Window:Show()
