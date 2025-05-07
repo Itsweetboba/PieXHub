@@ -1,45 +1,74 @@
--- ✅ Load Wind UI
-local Wind = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/Example.lua"))()
+-- Load Wind UI safely
+local success, WindUI = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/main.lua"))()
+end)
 
--- ✅ Create resized, mobile-optimized window
-local Window = Wind:CreateWindow("Bubble Gum Simulator Infinity", {
-    main_color = Color3.fromRGB(80, 120, 255),
-    min_size = Vector2.new(300, 250), -- Smaller size for mobile
-    toggle_key = Enum.KeyCode.RightShift, -- You can change this if RightShift isn't usable on mobile
-    can_resize = false -- Disable resizing on mobile
+if not success or not WindUI then
+    warn("❌ Failed to load Wind UI. Please check the URL or your internet connection.")
+    return
+end
+
+-- Create the main window with mobile size
+local Window = WindUI:CreateWindow({
+    Title = "WindUI | PieXHub",
+    Icon = "door-open",
+    Author = "PieX",
+    Folder = "PieXHub",
+    Size = UDim2.fromOffset(360, 640), -- Mobile size
+    Transparent = true,
+    Theme = "Dark",
+    User = {
+        Enabled = true,
+        Callback = function() print("User clicked") end,
+        Anonymous = true
+    },
+    SideBarWidth = 200,
+    HasOutline = true,
 })
 
 -- ✅ Create Main Tab
-local MainTab = Window:CreateTab("Main")
-
--- ✅ Add a status label
-MainTab:CreateLabel("📱 Mobile UI Loaded")
+local MainTab = Window:Tab({ Title = "Main", Icon = "type" })
 
 -- ✅ Auto Blow Toggle
-local AutoBlow = false
-MainTab:CreateToggle("🫧 Auto Blow", function(state)
-    AutoBlow = state
-    task.spawn(function()
-        while AutoBlow do
-            task.wait(0.1)
-            pcall(function()
-                game:GetService("ReplicatedStorage").Events.BubbleEvent:FireServer("Blow")
-            end)
-        end
-    end)
-end)
+getgenv().AutoBlow = false
+MainTab:Toggle({
+    Title = "Auto Blow",
+    Description = "Automatically blows bubble",
+    Default = false,
+    Callback = function(Value)
+        getgenv().AutoBlow = Value
+        task.spawn(function()
+            while getgenv().AutoBlow do
+                task.wait(0.1)
+                pcall(function()
+                    game:GetService("ReplicatedStorage").Events.BubbleEvent:FireServer("Blow")
+                end)
+            end
+        end)
+    end
+})
 
 -- ✅ Auto Sell Toggle
-MainTab:CreateToggle("💰 Auto Sell (Bypass)", function(state)
-    task.spawn(function()
-        while state do
-            task.wait(0.5)
-            pcall(function()
-                local sellArea = workspace:FindFirstChild("SellArea") or workspace:FindFirstChildWhichIsA("Part", true)
-                if sellArea then
-                    game.Players.LocalPlayer.Character:PivotTo(sellArea.CFrame + Vector3.new(0, 3, 0))
-                end
-            end)
-        end
-    end)
-end)
+getgenv().AutoSell = false
+MainTab:Toggle({
+    Title = "Auto Sell (Bypass)",
+    Description = "Teleport to sell area to bypass auto sell",
+    Default = false,
+    Callback = function(Value)
+        getgenv().AutoSell = Value
+        task.spawn(function()
+            while getgenv().AutoSell do
+                task.wait(0.5)
+                pcall(function()
+                    local sellArea = workspace:FindFirstChild("SellArea") or workspace:FindFirstChildWhichIsA("Part", true)
+                    if sellArea then
+                        game.Players.LocalPlayer.Character:PivotTo(sellArea.CFrame + Vector3.new(0, 3, 0))
+                    end
+                end)
+            end
+        end)
+    end
+})
+
+-- ✅ Show the UI
+Window:Show()
