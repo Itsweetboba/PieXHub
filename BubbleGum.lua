@@ -1,5 +1,5 @@
 -- Load Wind UI from the official GitHub repository
-local Wind = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/main.lua"))()
+local WindUI = loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI"))()
 
 -- Create the main window
 local Window = Wind:CreateWindow("Bubble Gum Simulator Infinity", {
