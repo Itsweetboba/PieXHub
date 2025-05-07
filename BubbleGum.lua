@@ -1,5 +1,14 @@
 -- Load Wind UI from the official GitHub repository
-local Wind = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/Example.lua"))()
+local success, Wind = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/Example.lua"))()
+end)
+
+if not success then
+    warn("❌ Failed to load Wind UI!")
+    return
+end
+
+print("✅ Wind UI loaded successfully!")
 
 -- Create the main window
 local Window = Wind:CreateWindow("Bubble Gum Simulator Infinity", {
@@ -9,12 +18,30 @@ local Window = Wind:CreateWindow("Bubble Gum Simulator Infinity", {
     can_resize = true
 })
 
+if not Window then
+    warn("❌ Failed to create Window.")
+    return
+end
+
+print("✅ Window created.")
+
 -- Create the Main tab
 local MainTab = Window:CreateTab("Main")
+
+if not MainTab then
+    warn("❌ Failed to create MainTab.")
+    return
+end
+
+print("✅ MainTab created.")
+
+-- Test label
+MainTab:CreateLabel("Main tab loaded")
 
 -- Auto Blow Toggle
 local AutoBlow = false
 MainTab:CreateToggle("Auto Blow", function(state)
+    print("Auto Blow toggle clicked:", state)
     AutoBlow = state
     task.spawn(function()
         while AutoBlow do
@@ -26,8 +53,9 @@ MainTab:CreateToggle("Auto Blow", function(state)
     end)
 end)
 
--- Auto Sell Toggle
+-- Auto Sell Toggle (Bypass)
 MainTab:CreateToggle("Auto Sell (Bypass)", function(state)
+    print("Auto Sell toggle clicked:", state)
     task.spawn(function()
         while state do
             task.wait(0.5)
