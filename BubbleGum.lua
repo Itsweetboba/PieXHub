@@ -1,47 +1,23 @@
--- Load Wind UI from the official GitHub repository
-local success, Wind = pcall(function()
-    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/Example.lua"))()
-end)
+-- ✅ Load Wind UI
+local Wind = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/Example.lua"))()
 
-if not success then
-    warn("❌ Failed to load Wind UI!")
-    return
-end
-
-print("✅ Wind UI loaded successfully!")
-
--- Create the main window
+-- ✅ Create resized, mobile-optimized window
 local Window = Wind:CreateWindow("Bubble Gum Simulator Infinity", {
     main_color = Color3.fromRGB(80, 120, 255),
-    min_size = Vector2.new(450, 350),
-    toggle_key = Enum.KeyCode.RightShift,
-    can_resize = true
+    min_size = Vector2.new(300, 250), -- Smaller size for mobile
+    toggle_key = Enum.KeyCode.RightShift, -- You can change this if RightShift isn't usable on mobile
+    can_resize = false -- Disable resizing on mobile
 })
 
-if not Window then
-    warn("❌ Failed to create Window.")
-    return
-end
-
-print("✅ Window created.")
-
--- Create the Main tab
+-- ✅ Create Main Tab
 local MainTab = Window:CreateTab("Main")
 
-if not MainTab then
-    warn("❌ Failed to create MainTab.")
-    return
-end
+-- ✅ Add a status label
+MainTab:CreateLabel("📱 Mobile UI Loaded")
 
-print("✅ MainTab created.")
-
--- Test label
-MainTab:CreateLabel("Main tab loaded")
-
--- Auto Blow Toggle
+-- ✅ Auto Blow Toggle
 local AutoBlow = false
-MainTab:CreateToggle("Auto Blow", function(state)
-    print("Auto Blow toggle clicked:", state)
+MainTab:CreateToggle("🫧 Auto Blow", function(state)
     AutoBlow = state
     task.spawn(function()
         while AutoBlow do
@@ -53,9 +29,8 @@ MainTab:CreateToggle("Auto Blow", function(state)
     end)
 end)
 
--- Auto Sell Toggle (Bypass)
-MainTab:CreateToggle("Auto Sell (Bypass)", function(state)
-    print("Auto Sell toggle clicked:", state)
+-- ✅ Auto Sell Toggle
+MainTab:CreateToggle("💰 Auto Sell (Bypass)", function(state)
     task.spawn(function()
         while state do
             task.wait(0.5)
