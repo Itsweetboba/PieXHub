@@ -1,22 +1,58 @@
 -- Load Wind UI safely
-local success, WindLib = pcall(function()
+local success, WindUI = pcall(function()
     return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/main.lua"))()
 end)
 
-if not success or not WindLib then
+if not success or not WindUI then
     warn("❌ Failed to load Wind UI. Please check the URL or your internet connection.")
     return
 end
 
--- Create the main window
-local Window = WindLib:CreateWindow("Bubble Gum Simulator Infinity", {
-    main_color = Color3.fromRGB(80, 120, 255),
-    min_size = Vector2.new(450, 350),
-    toggle_key = Enum.KeyCode.RightShift,
-    can_resize = true
+-- Function to create a gradient text
+function gradient(text, startColor, endColor)
+    local result = ""
+    local length = #text
+    for i = 1, length do
+        local t = (i - 1) / math.max(length - 1, 1)
+        local r = math.floor((startColor.R + (endColor.R - startColor.R) * t) * 255)
+        local g = math.floor((startColor.G + (endColor.G - startColor.G) * t) * 255)
+        local b = math.floor((startColor.B + (endColor.B - startColor.B) * t) * 255)
+        local char = text:sub(i, i)
+        result = result .. string.format("<font color='rgb(%d,%d,%d)'>%s</font>", r, g, b, char)
+    end
+    return result
+end
+
+-- Welcome Popup
+local Confirmed = false
+WindUI:Popup({
+    Title = "Welcome!",
+    Icon = "info",
+    Content = "Welcome to the Bubble Gum Simulator Infinity!",
+    Buttons = {
+        { Title = "Cancel", Callback = function() end, Variant = "Tertiary" },
+        { Title = "Continue", Icon = "arrow-right", Callback = function() Confirmed = true end, Variant = "Primary" }
+    }
 })
 
--- Main Tab
+repeat wait() until Confirmed
+
+-- Create the main window
+local Window = WindUI:CreateWindow({
+    Title = "Bubble Gum Simulator Infinity",
+    Icon = "door-open",
+    Author = "Your Name",
+    Folder = "CloudHub",
+    Size = UDim2.fromOffset(580, 460),
+    Transparent = true,
+    Theme = "Dark",
+    UserEnabled = false,
+    SideBarWidth = 200,
+    URL = "https://github.com/Footagesus/WindUI",
+    SaveKey = false,
+})
+
+-- Create Main Tab
 local MainTab = Window:CreateTab("Main")
 
 -- Auto Blow Toggle
