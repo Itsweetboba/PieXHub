@@ -8,6 +8,8 @@ if not success or not WindLib then
     return
 end
 
+print("Wind UI loaded successfully.")
+
 -- Create the main window
 local Window = WindLib:CreateWindow("Bubble Gum Simulator Infinity", {
     main_color = Color3.fromRGB(80, 120, 255),
@@ -16,13 +18,17 @@ local Window = WindLib:CreateWindow("Bubble Gum Simulator Infinity", {
     can_resize = true
 })
 
+print("Main window created.")
+
 -- Main Tab
 local MainTab = Window:CreateTab("Main")
+print("Main tab created.")
 
 -- Auto Blow Toggle
 local AutoBlow = false
 MainTab:CreateToggle("Auto Blow", function(state)
     AutoBlow = state
+    print("Auto Blow state changed to: " .. tostring(state))
     task.spawn(function()
         while AutoBlow do
             task.wait(0.1)
@@ -35,6 +41,7 @@ end)
 
 -- Auto Sell Toggle
 MainTab:CreateToggle("Auto Sell (Bypass)", function(state)
+    print("Auto Sell state changed to: " .. tostring(state))
     task.spawn(function()
         while state do
             task.wait(0.5)
@@ -50,3 +57,4 @@ end)
 
 -- Ensure the UI is visible
 Window:Show()
+print("UI should now be visible.")
