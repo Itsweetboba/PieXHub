@@ -1,34 +1,23 @@
--- Load Wind UI safely
-local success, WindLib = pcall(function()
-    return loadstring(game:HttpGet("https://raw.githubusercontent.com/ItzJustDev/Wind/main/Source.lua"))()
+-- Load Rayfield UI safely
+local success, Rayfield = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/yourusername/Rayfield/main/source.lua"))()
 end)
 
-if not success or not WindLib then
-    warn("❌ Failed to load Wind UI. Please check the URL or your internet connection.")
+if not success or not Rayfield then
+    warn("❌ Failed to load Rayfield UI. Please check the URL or your internet connection.")
     return
 end
 
-print("Wind UI loaded successfully.")
-
 -- Create the main window
-local Window = WindLib:CreateWindow("Bubble Gum Simulator Infinity", {
-    main_color = Color3.fromRGB(80, 120, 255),
-    min_size = Vector2.new(450, 350),
-    toggle_key = Enum.KeyCode.RightShift,
-    can_resize = true
-})
-
-print("Main window created.")
+local Window = Rayfield:CreateWindow("Bubble Gum Simulator Infinity")
 
 -- Main Tab
 local MainTab = Window:CreateTab("Main")
-print("Main tab created.")
 
 -- Auto Blow Toggle
 local AutoBlow = false
 MainTab:CreateToggle("Auto Blow", function(state)
     AutoBlow = state
-    print("Auto Blow state changed to: " .. tostring(state))
     task.spawn(function()
         while AutoBlow do
             task.wait(0.1)
@@ -41,7 +30,6 @@ end)
 
 -- Auto Sell Toggle
 MainTab:CreateToggle("Auto Sell (Bypass)", function(state)
-    print("Auto Sell state changed to: " .. tostring(state))
     task.spawn(function()
         while state do
             task.wait(0.5)
@@ -55,6 +43,5 @@ MainTab:CreateToggle("Auto Sell (Bypass)", function(state)
     end)
 end)
 
--- Ensure the UI is visible
-Window:Show()
-print("UI should now be visible.")
+-- Show the UI
+Rayfield:Show()
