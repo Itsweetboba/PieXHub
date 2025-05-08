@@ -1,6 +1,6 @@
--- Load Wind UI safely
+-- ✅ Load WindUI Safely
 local success, WindUI = pcall(function()
-    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/main.lua"))()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/Example.lua"))()
 end)
 
 if not success or not WindUI then
@@ -8,10 +8,10 @@ if not success or not WindUI then
     return
 end
 
--- Create the main window with mobile size
+-- ✅ Create Main Window
 local Window = WindUI:CreateWindow({
-    Title = "WindUI | PieXHub",
-    Icon = "door-open",
+    Title = "PieXHub | BubbleGumSimulatorInfinity",
+    Icon = "bubble",
     Author = "PieX",
     Folder = "PieXHub",
     Size = UDim2.fromOffset(360, 640), -- Mobile size
@@ -48,11 +48,11 @@ MainTab:Toggle({
     end
 })
 
--- ✅ Auto Sell Toggle
+-- ✅ Auto Sell (Bypass) Toggle
 getgenv().AutoSell = false
 MainTab:Toggle({
     Title = "Auto Sell (Bypass)",
-    Description = "Teleport to sell area to bypass auto sell",
+    Description = "Teleports to the sell area",
     Default = false,
     Callback = function(Value)
         getgenv().AutoSell = Value
